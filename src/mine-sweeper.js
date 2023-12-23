@@ -23,8 +23,74 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
+function minesweeper(matrix) {
+  function checkMine(elem) {
+    if (elem !== 'mine') {
+      return true;
+    }
+    return false;
+  }
+  let result = JSON.parse(JSON.stringify(matrix));
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (matrix[i][j]) {
+        result[i][j] = 'mine';
+        if (i !== 0) {
+          if (checkMine(result[i-1][j])){
+            result[i-1][j] = result[i-1][j] + 1
+          }
+          if (j !== 0) {
+            if (checkMine(result[i-1][j-1])){
+              result[i-1][j-1] = result[i-1][j-1] + 1
+            }
+          }
+          if (j !== matrix[i].length - 1) {
+            if (checkMine(result[i-1][j+1])){
+              result[i-1][j+1] = result[i-1][j+1] + 1
+            }
+          }
+        }
+        if (i !== matrix.length - 1) {
+          if (checkMine(result[i+1][j])){
+            result[i+1][j] = result[i+1][j] + 1
+          }
+          if (j !== 0) {
+            if (checkMine(result[i+1][j-1])){
+              result[i+1][j-1] = result[i+1][j-1] + 1
+            }
+          }
+          if (j !== matrix[i].length - 1) {
+            if (checkMine(result[i+1][j+1])){
+              result[i+1][j+1] = result[i+1][j+1] + 1
+            }
+          }
+        }
+        if (j !== 0) {
+          if (checkMine(result[i][j-1])){
+            result[i][j-1] = result[i][j-1] + 1
+          }
+        }
+        if (j !== matrix[i].length - 1) {
+          if (checkMine(result[i][j+1])){
+            result[i][j+1] = result[i][j+1] + 1
+          }
+        }
+        console.debug(result);
+      }
+    }
+  }
+  for (let i = 0; i < result.length; i++) {
+    for (let j = 0; j < result[i].length; j++) {
+      if (result[i][j] === 'mine') {
+        result[i][j] = 1
+      }
+      if (!result[i][j]) {
+        result[i][j] = 0;
+      }
+    }
+  }
+  return result;
+  // throw new NotImplementedError('Not implemented');
   // remove line with error and write your code here
 }
 
